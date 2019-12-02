@@ -1,0 +1,142 @@
+Exercise: 1 (Serge I: 2002-09-30)
+Find the model number, speed and hard drive capacity for all the PCs with prices below $500.
+Result set: model, speed, hd.
+
+SELECT model, speed, hd
+FROM PC
+WHERE price<500;
+
+
+Exercise: 2 (Serge I: 2002-09-21)
+List all printer makers. Result set: maker.
+
+SELECT DISTINCT maker
+FROM Product
+WHERE type='Printer';
+
+
+
+Exercise: 3 (Serge I: 2002-09-30)
+Find the model number, RAM and screen size of the laptops with prices over $1000.
+
+SELECT model, ram, screen
+FROM Laptop
+WHERE price>1000;
+
+
+
+Exercise: 4 (Serge I: 2002-09-21)
+Find all records from the Printer table containing data about color printers.
+
+SELECT * FROM Printer WHERE color='y';
+
+
+
+Exercise: 5 (Serge I: 2002-09-30)
+Find the model number, speed and hard drive capacity of PCs cheaper than $600 having a 12x or a 24x CD drive.
+
+SELECT model, speed, hd
+FROM PC
+WHERE price<600 AND (cd='12x' OR cd='24x');
+
+
+
+Exercise: 6 (Serge I: 2002-10-28)
+For each maker producing laptops with a hard drive capacity of 10 Gb or higher, find the speed of such laptops. Result set: maker, speed.
+
+SELECT DISTINCT Product.maker, Laptop.speed
+FROM Product INNER JOIN Laptop ON Product.model=Laptop.model
+WHERE hd>=10 AND type = 'laptop';
+
+
+
+Exercise: 7 (Serge I: 2002-11-02)
+Get the models and prices for all commercially available products (of any type) produced by maker B.
+
+SELECT model, price 
+FROM PC 
+WHERE model IN (SELECT model 
+ FROM Product 
+ WHERE maker = 'B' AND 
+ type = 'PC'
+ )
+UNION
+SELECT model, price 
+FROM Laptop 
+WHERE model IN (SELECT model 
+ FROM Product 
+ WHERE maker = 'B' AND 
+ type = 'Laptop'
+ )
+UNION
+SELECT model, price 
+FROM Printer 
+WHERE model IN (SELECT model 
+ FROM Product 
+ WHERE maker = 'B' AND 
+ type = 'Printer'
+);
+
+
+
+Exercise: 8 (Serge I: 2003-02-03)
+Find the makers producing PCs but not laptops.
+
+SELECT maker FROM Product WHERE type='PC'
+EXCEPT
+SELECT maker FROM Product WHERE type='Laptop';
+
+
+
+Exercise: 9 (Serge I: 2002-11-02)
+Find the makers of PCs with a processor speed of 450 MHz or more. Result set: maker.
+
+SELECT DISTINCT maker
+FROM Product, PC
+WHERE Product.model = PC.model
+AND speed >= 450
+
+
+
+Exercise: 10 (Serge I: 2002-09-23)
+Find the printer models having the highest price. Result set: model, price.
+
+SELECT model, price
+FROM Printer
+WHERE price IN (SELECT MAX(price) from Printer)
+
+
+
+Exercise: 11 (Serge I: 2002-11-02)
+Find out the average speed of PCs.
+
+SELECT AVG(speed)
+FROM PC;
+
+
+
+Exercise: 12 (Serge I: 2002-11-02)
+Find out the average speed of the laptops priced over $1000.
+
+SELECT AVG(speed)
+FROM Laptop
+WHERE price>1000;
+
+
+
+Exercise: 13 (Serge I: 2002-11-02)
+Find out the average speed of the PCs produced by maker A.
+
+SELECT AVG(speed)
+FROM PC
+WHERE model IN (SELECT model FROM Product WHERE maker='A' AND type='PC')
+
+
+
+Exercise: 14 (Serge I: 2002-11-05)
+For the ships in the Ships table that have at least 10 guns, get the class, name, and country.
+
+SELECT Ships.class, Ships.name, Classes.country
+FROM Ships INNER JOIN Classes ON Ships.class=Classes.class
+WHERE numGuns>=10
+
