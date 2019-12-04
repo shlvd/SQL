@@ -1,0 +1,19 @@
+Exercise: 24 (Serge I: 2003-02-03)
+List the models of any type having the highest price of all products present in the database.
+
+
+SELECT DISTINCT model 
+FROM(
+SELECT model, price FROM PC 
+UNION ALL
+SELECT model, price FROM Printer
+UNION ALL
+SELECT model, price FROM Laptop
+) x
+WHERE price >= all(
+SELECT MAX(price) FROM PC 
+UNION ALL
+SELECT MAX(price) FROM Printer
+UNION ALL
+SELECT MAX(price) FROM Laptop
+)
