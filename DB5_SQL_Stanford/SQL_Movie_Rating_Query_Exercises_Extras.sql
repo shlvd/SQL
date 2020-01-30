@@ -37,3 +37,6 @@ where mID not in
 (select mID from Rating inner join Reviewer using(rID) where name = 'Chris Jackson');
 
 --5. For all pairs of reviewers such that both reviewers gave a rating to the same movie, return the names of both reviewers. Eliminate duplicates, don't pair reviewers with themselves, and include each pair only once. For each pair, return the names in the pair in alphabetical order.
+select distinct r1.name, r2.name
+from Reviewer r1, Reviewer r2, Rating rt1, Rating rt2
+where rt1.mID = rt2.mID and rt1.rID = r1.rID and r2.rID = rt2.rID and r1.name < r2.name
