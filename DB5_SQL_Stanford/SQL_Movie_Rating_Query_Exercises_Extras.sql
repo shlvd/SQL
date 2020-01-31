@@ -39,4 +39,18 @@ where mID not in
 --5. For all pairs of reviewers such that both reviewers gave a rating to the same movie, return the names of both reviewers. Eliminate duplicates, don't pair reviewers with themselves, and include each pair only once. For each pair, return the names in the pair in alphabetical order.
 select distinct r1.name, r2.name
 from Reviewer r1, Reviewer r2, Rating rt1, Rating rt2
-where rt1.mID = rt2.mID and rt1.rID = r1.rID and r2.rID = rt2.rID and r1.name < r2.name
+where rt1.mID = rt2.mID and rt1.rID = r1.rID and r2.rID = rt2.rID and r1.name < r2.name;
+
+--6. For each rating that is the lowest (fewest stars) currently in the database, return the reviewer name, movie title, and number of stars.
+select name, title, stars
+from Movie inner join Rating using(mID)
+inner join Reviewer using(rID)
+where stars in (select min(stars) from Rating);
+
+--7. List movie titles and average ratings, from highest-rated to lowest-rated. If two or more movies have the same average rating, list them in alphabetical order.
+select title, avg(stars) as average
+from Movie inner join Rating using(mID)
+group by mID
+order by average desc, title;
+
+--8. Find the names of all reviewers who have contributed three or more ratings. (As an extra challenge, try writing the query without HAVING or without COUNT.)
