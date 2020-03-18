@@ -57,3 +57,47 @@ order by average desc, title;
 SELECT name
 FROM Reviewer
 WHERE (SELECT COUNT(*) FROM Rating WHERE Rating.rId = Reviewer.rId) >= 3;
+
+-- 9. Some directors directed more than one movie. For all such directors, return the titles of all movies directed by them, along with the director name. Sort by director name, then movie title.
+SELECT title, director
+FROM Movie M1
+WHERE (SELECT COUNT(*) FROM Movie M2 WHERE M1.director = M2.director) > 1
+ORDER BY director, title;
+
+-- 10. Find the movie(s) with the highest average rating. Return the movie title(s) and average rating.
+SELECT title, AVG(stars) AS average
+FROM Movie
+INNER JOIN Rating USING(mId)
+GROUP BY mId
+HAVING average = (
+  SELECT MAX(average_stars)
+  FROM (
+    SELECT title, AVG(stars) AS average_stars
+    FROM Movie
+    INNER JOIN Rating USING(mId)
+    GROUP BY mId
+  )
+);
+
+-- 11. Find the movie(s) with the lowest average rating. Return the movie title(s) and average rating.
+SELECT title, AVG(stars) AS average
+FROM Movie
+INNER JOIN Rating USING(mId)
+GROUP BY mId
+HAVING average = (
+  SELECT MIN(average_stars)
+  FROM (
+    SELECT title, AVG(stars) AS average_stars
+    FROM Movie
+    INNER JOIN Rating USING(mId)
+    GROUP BY mId
+  )
+);
+
+-- 12. For each director, return the director's name together with the title(s) of the movie(s) they directed that received the highest rating among all of their movies, and the value of that rating. Ignore movies whose director is NULL. 
+SELECT director, title, MAX(stars)
+FROM Movie
+INNER JOIN Rating USING(mId)
+WHERE director IS NOT NULL
+GROUP BY director;
+
