@@ -4,7 +4,7 @@ Result set: model, speed, hd.
 
 SELECT model, speed, hd
 FROM PC
-WHERE price<500;
+WHERE price < 500;
 
 
 Exercise: 2 (Serge I: 2002-09-21)
@@ -21,7 +21,7 @@ Find the model number, RAM and screen size of the laptops with prices over $1000
 
 SELECT model, ram, screen
 FROM Laptop
-WHERE price>1000;
+WHERE price > 1000;
 
 
 
